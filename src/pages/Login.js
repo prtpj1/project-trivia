@@ -1,8 +1,9 @@
 import React from 'react';
-// import propTypes from 'prop-types';
-// import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import { actionGetToken } from '../redux/actions/action';
 
 class Login extends React.Component {
   constructor() {
@@ -14,6 +15,11 @@ class Login extends React.Component {
     };
     this.validateEmail = this.validateEmail.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleButton = () => {
+    const { getToken } = this.props;
+    getToken();
   }
 
   validateEmail() {
@@ -66,7 +72,7 @@ class Login extends React.Component {
             <Button
               testid="btn-play"
               label="Play"
-              // onClick="Play"
+              onClick={ this.handleButton }
               disabled={ btnDisabled }
             />
           </div>
@@ -76,9 +82,12 @@ class Login extends React.Component {
   }
 }
 
-/* Login.propTypes = {
-  propName: propTypes.string.isRequired,
-  propEmail: propTypes.string.isRequired,
-}; */
+Login.propTypes = {
+  getToken: PropTypes.func.isRequired,
+};
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getToken: () => dispatch(actionGetToken()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
