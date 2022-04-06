@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import playerReducer from './playerReducer';
-import tokenReducer from './tokenReducer';
+import player from './player';
+import token from './token';
 
 const rootReducer = combineReducers({
-  playerReducer,
-  tokenReducer,
+  player,
+  token,
 });
 
 export default rootReducer;

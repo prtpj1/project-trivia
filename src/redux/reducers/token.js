@@ -14,5 +14,5 @@ const token = (state = INITIAL_STATE, action) => {
     return state;
   }
 };
-
+// algo
 export default token;
