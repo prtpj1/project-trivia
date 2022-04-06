@@ -2,26 +2,17 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-import { fetchAvatar } from '../services';
 
 class Header extends Component {
-  componentDidMount() {
-    const { email } = this.props;
-
-    const cryptoEmail = md5(email).toString();
-    // console.log(cryptoEmail);
-    fetchAvatar(cryptoEmail);
-    console.log(cryptoEmail);
-  }
-
   render() {
-    const { name, score } = this.props;
+    const { name, score, email } = this.props;
+    const userAvatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     return (
       <div>
         <img
           alt="avatar"
           data-testid="header-profile-picture"
-          src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
+          src={ userAvatar }
         />
         <span
           data-testid="header-player-name"
@@ -45,8 +36,7 @@ class Header extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  // avatar: ,
-  email: state.playerReducer.email,
+  email: state.playerReducer.gravatarEmail,
   name: state.playerReducer.name,
   score: state.playerReducer.score,
 });
@@ -54,7 +44,11 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(Header);
 
 Header.propTypes = {
-  email: propTypes.string.isRequired,
+  email: propTypes.string,
   name: propTypes.string.isRequired,
   score: propTypes.number.isRequired,
+};
+
+Header.defaultProps = {
+  email: '',
 };

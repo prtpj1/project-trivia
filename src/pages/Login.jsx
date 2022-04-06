@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Button from '../components/Button';
-import Header from '../components/Header';
 import Input from '../components/Input';
 import logo from '../trivia.png';
 
@@ -24,12 +23,13 @@ class Login extends React.Component {
   }
 
   clickButton = () => {
-    const { getToken, setEmail, setUser } = this.props;
+    const { getToken, setEmail, setUser, history } = this.props;
     const { email, name } = this.state;
 
     setEmail(email);
     setUser(name);
     getToken();
+    history.push('/play');
   }
 
   goToConfig = () => {
@@ -65,7 +65,6 @@ class Login extends React.Component {
     return (
       <div>
         <header className="App-header">
-          <Header />
           <img
             src={ logo }
             className="App-logo"
