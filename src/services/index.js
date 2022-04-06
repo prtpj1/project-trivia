@@ -5,4 +5,12 @@ const fetchToken = async () => {
   return JSON.token;
 };
 
+export const fetchAvatar = async (hashEmail) => {
+  const URL = `https://www.gravatar.com/avatar/${hashEmail}`;
+  const response = await fetch(URL);
+  const data = await response.json();
+  console.log(data);
+  return data;
+};
+
 export default fetchToken;

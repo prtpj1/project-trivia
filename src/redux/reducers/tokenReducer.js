@@ -1,3 +1,5 @@
+import { SAVE_TOKEN } from '../actions/actions';
+
 let INITIAL_STATE = '';
 
 const handleToken = (token) => {
@@ -7,7 +9,7 @@ const handleToken = (token) => {
 
 const token = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case 'SAVE_TOKEN': return handleToken(action.token);
+  case SAVE_TOKEN: return handleToken(action.token);
   default:
     return state;
   }
