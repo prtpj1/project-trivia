@@ -1,9 +1,14 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
-import Input from '../components/Input';
+
 import Button from '../components/Button';
-import { actionGetToken } from '../redux/actions/action';
+import Input from '../components/Input';
+import logo from '../trivia.png';
+
+import { actionGetToken, setEmail as actionSetEmail,
+  setUser as actionSetUser }
+from '../redux/actions/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -17,9 +22,14 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleButton = () => {
-    const { getToken } = this.props;
+  clickButton = () => {
+    const { getToken, setEmail, setUser, history } = this.props;
+    const { email, name } = this.state;
+
+    setEmail(email);
+    setUser(name);
     getToken();
+    history.push('/play');
   }
 
   goToConfig = () => {
@@ -54,6 +64,13 @@ class Login extends React.Component {
     // const { propName, propEmail } = this.props;
     return (
       <div>
+        <header className="App-header">
+          <img
+            src={ logo }
+            className="App-logo"
+            alt="logo"
+          />
+        </header>
         <form>
           <div data-testid="input-player-name">
             <Input
@@ -77,7 +94,7 @@ class Login extends React.Component {
             <Button
               testid="btn-play"
               label="Play"
-              onClick={ this.handleButton }
+              onClick={ this.clickButton }
               disabled={ btnDisabled }
             />
           </div>
@@ -95,10 +112,14 @@ class Login extends React.Component {
 Login.propTypes = {
   getToken: PropTypes.func.isRequired,
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  setEmail: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(actionGetToken()),
+  setEmail: (email) => dispatch(actionSetEmail(email)),
+  setUser: (user) => dispatch(actionSetUser(user)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
