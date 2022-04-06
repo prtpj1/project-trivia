@@ -22,6 +22,11 @@ class Login extends React.Component {
     getToken();
   }
 
+  goToConfig = () => {
+    const { history } = this.props;
+    history.push('/config');
+  }
+
   validateEmail() {
     const { email, name } = this.state;
     const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+/i;
@@ -77,6 +82,11 @@ class Login extends React.Component {
             />
           </div>
         </form>
+        <Button
+          testid="btn-settings"
+          label="Configurações"
+          onClick={ this.goToConfig }
+        />
       </div>
     );
   }
@@ -84,6 +94,7 @@ class Login extends React.Component {
 
 Login.propTypes = {
   getToken: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
