@@ -19,6 +19,11 @@ const player = (state = INITIAL_STATE, action) => {
       ...state,
       name: action.user,
     };
+  case 'SAVE_SCORE':
+    return {
+      ...state,
+      score: state.score + action.score,
+    };
   default:
     return state;
   }

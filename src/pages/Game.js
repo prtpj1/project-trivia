@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import './game.css';
 import propTypes from 'prop-types';
 import Header from '../components/Header';
-import { actionGetToken } from '../redux/actions/actions';
+import { actionGetToken, actionSaveScore } from '../redux/actions/actions';
 
 class Game extends Component {
   constructor() {
@@ -11,13 +12,21 @@ class Game extends Component {
       count: 0,
       correctAnswer: '',
       wrongAnswers: [],
+      btnNext: false,
+      trueAnswer: '',
+      wrongOne: '',
+      disabledAnswer: false,
+      timer: 30,
     };
+    this.counter = null;
   }
 
   componentDidMount = async () => {
-    const interval = 5000;
+    this.setState({ timer: 0 });
+    const interval = 30000;
+    this.initTimer();
     await this.validateToken();
-    setInterval(this.updateQuiz, interval);
+    setInterval(this.disableQuiz, interval);
     this.createButtons();
   }
 
@@ -27,7 +36,23 @@ class Game extends Component {
     if (count === four) {
       clearInterval(this.updateQuiz);
     }
-    // this.createButtons();
+  }
+
+  disableQuiz = () => {
+    this.setState({ disabledAnswer: true });
+  }
+
+  initTimer = () => {
+    const { timer } = this.state;
+    console.log(timer);
+    const intervalTimer = 1000;
+    if (timer > 0) {
+      this.counter = setInterval(() => {
+        this.setState({ timer: timer - 1 });
+      }, intervalTimer);
+    } else if (timer === 0) {
+      clearInterval(this.counter);
+    }
   }
 
   validateToken = async () => {
@@ -38,24 +63,59 @@ class Game extends Component {
     }
   }
 
-  updateQuiz = () => {
-    const { count } = this.state;
-    const four = 4;
-    if (count === four) {
-      clearInterval(this.updateQuiz);
-      return;
-    }
+  selectAnswer = ({ target }) => {
+    const { count, timer } = this.state;
+    const { quiz } = this.props; // saveScore
+    const correct = 'correct-answer';
+    const dez = 10;
+    const tres = 3;
+    const diff = quiz.results[count].difficulty;
+    console.log(diff);
     this.setState({
-      count: count + 1,
+      btnNext: true,
+      trueAnswer: 'showAnswer',
+      wrongOne: 'showWrong',
     });
-    this.createButtons();
+    console.log(target.className);
+    if (target.className.includes(correct) && diff === 'easy') {
+      const result = dez + timer;
+      return console.log(result);
+    } if (target.className.includes(correct) === correct && diff === 'medium') {
+      const mult = timer * 2;
+      const result = dez + mult;
+      return console.log(result);
+    } if (target.className.includes(correct) === correct && diff === 'hard') {
+      const mult = timer * tres;
+      const result = dez + mult;
+      return console.log(result);
+    }
+  }
+
+  handleNextBtn = () => {
+    this.setState({
+      disabledAnswer: false,
+      trueAnswer: '',
+      wrongOne: '',
+    });
+    this.updateQuiz();
+    this.setState({ btnNext: false });
+  }
+
+  updateQuiz = () => {
+    const { count, wrongAnswers } = this.state;
+    if (count <= wrongAnswers.length - 1) {
+      this.setState({
+        count: count + 1,
+      }, this.createButtons);
+    }
   }
 
   createButtons = () => {
     const { count } = this.state;
     const { quiz } = this.props;
+    const nRand = 0.5;
     const answers = [...quiz.results[count].incorrect_answers,
-      quiz.results[count].correct_answer].sort();
+      quiz.results[count].correct_answer].sort(() => nRand - Math.random());
     const correct = quiz.results[count].correct_answer;
     this.setState({
       correctAnswer: correct,
@@ -64,47 +124,47 @@ class Game extends Component {
   }
 
   render() {
-    const { count, wrongAnswers, correctAnswer } = this.state;
+    const { count, wrongAnswers, correctAnswer,
+      btnNext, trueAnswer, wrongOne, disabledAnswer, timer } = this.state;
     const { quiz } = this.props;
-    let insideCount = 0;
-    const nRand = 0.5;
-
     return (
       <div>
         <Header />
+        <span>{timer}</span>
         <div>
           <h1 data-testid="question-category">{ quiz.results[count].category }</h1>
           <p data-testid="question-text">{ quiz.results[count].question }</p>
           <div data-testid="answer-options">
             {
-              wrongAnswers.sort(() => nRand - Math.random()).map((answer, index) => {
+              wrongAnswers.map((answer, index) => (
                 // randomizacao da array retirado de https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-                insideCount += 1;
-                if (answer === correctAnswer) {
-                  insideCount -= 1;
-                  return (
-                    <button
-                      key={ index }
-                      type="button"
-                      data-testid="correct-answer"
-                    >
-                      { answer }
-                    </button>
-                  );
-                }
-                return (
-                  <button
-                    key={ index }
-                    type="button"
-                    data-testid={ `wrong-answer-${insideCount - 1}` }
-                  >
-                    { answer }
-                  </button>
-                );
-              })
+                <button
+                  key={ index }
+                  type="button"
+                  onClick={ this.selectAnswer }
+                  disabled={ disabledAnswer }
+                  className={ answer === correctAnswer
+                    ? `correct-answer ${trueAnswer}`
+                    : `wrong-answer ${wrongOne}` }
+                  data-testid={ answer === correctAnswer
+                    ? 'correct-answer'
+                    : `wrong-answer${index}` }
+                >
+                  { answer }
+                </button>
+              ))
             }
           </div>
         </div>
+        {btnNext ? (
+          <button
+            data-testid="btn-next"
+            onClick={ this.handleNextBtn }
+            type="button"
+          >
+            Next
+          </button>
+        ) : ''}
       </div>
     );
   }
@@ -117,6 +177,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(actionGetToken()),
+  saveScore: (score) => dispatch(actionSaveScore(score)),
 });
 
 Game.defaultProps = {
@@ -129,6 +190,7 @@ Game.propTypes = {
     results: propTypes.arrayOf(propTypes.object),
     response_code: propTypes.number,
   }),
+  // saveScore: propTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

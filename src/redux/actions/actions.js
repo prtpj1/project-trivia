@@ -25,6 +25,11 @@ export const setEmail = (email) => ({
   email,
 });
 
+export const actionSaveScore = (score) => ({
+  type: 'SAVE_SCORE',
+  score,
+});
+
 export const actionGetToken = () => async (dispatch) => {
   const token = await fetchToken();
   dispatch(actionSaveToken(token));
