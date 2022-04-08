@@ -22,14 +22,15 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  clickButton = () => {
+  clickButton = async () => {
     const { getToken, setEmail, setUser, history } = this.props;
     const { email, name } = this.state;
 
     setEmail(email);
     setUser(name);
-    getToken();
+    await getToken();
     history.push('/play');
+    // await setQuiz(token);
   }
 
   goToConfig = () => {
@@ -116,10 +117,14 @@ Login.propTypes = {
   setUser: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  token: state.token,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(actionGetToken()),
   setEmail: (email) => dispatch(actionSetEmail(email)),
   setUser: (user) => dispatch(actionSetUser(user)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
