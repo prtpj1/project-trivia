@@ -27,7 +27,6 @@ class Header extends Component {
           id="score"
           name="score"
         >
-          Score:
           { score }
         </span>
       </div>
