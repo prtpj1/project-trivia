@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import './game.css';
 import propTypes from 'prop-types';
 import Header from '../components/Header';
-import { actionGetToken, actionSaveScore } from '../redux/actions/actions';
+import {
+  actionGetToken,
+  actionSaveScore,
+  actionSumAssertions,
+}
+from '../redux/actions/actions';
 
 class Game extends Component {
   constructor() {
@@ -17,6 +22,7 @@ class Game extends Component {
       wrongOne: '',
       disabledAnswer: false,
       timer: 30,
+      assertions: 1,
     };
   }
 
@@ -71,7 +77,14 @@ class Game extends Component {
     }
   }
 
-  mix = () => {
+  mix = ({ target }) => {
+    const { assertions, correctAnswer } = this.state;
+    const { sumAssertions } = this.props;
+    console.log(target);
+    this.setState({
+      assertions: correctAnswer === target.value ? assertions + 1 : assertions,
+    });
+    sumAssertions(assertions);
     this.handleScore();
     this.selectAnswer();
   }
@@ -139,6 +152,7 @@ class Game extends Component {
                       disabled={ disabledAnswer }
                       className={ `correct-answer ${trueAnswer}` }
                       data-testid="correct-answer"
+                      value={ correctAnswer }
                     >
                       { answer }
                     </button>
@@ -198,6 +212,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getToken: () => dispatch(actionGetToken()),
   saveScore: (score) => dispatch(actionSaveScore(score)),
+  sumAssertions: (assertions) => dispatch(actionSumAssertions(assertions)),
 });
 
 Game.defaultProps = {
@@ -212,6 +227,7 @@ Game.propTypes = {
     response_code: propTypes.number,
   }),
   saveScore: propTypes.func.isRequired,
+  sumAssertions: propTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

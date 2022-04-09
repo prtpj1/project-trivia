@@ -4,6 +4,7 @@ export const EMAIL = 'EMAIL';
 export const USER = 'USER';
 export const SAVE_TOKEN = 'SAVE_TOKEN';
 export const SAVE_QUIZ = 'SAVE_QUIZ';
+export const SUM_ASSERTIONS = 'SUM_ASSERTIONS';
 
 export const actionSaveToken = (token) => ({
   type: SAVE_TOKEN,
@@ -28,6 +29,11 @@ export const setEmail = (email) => ({
 export const actionSaveScore = (score) => ({
   type: 'SAVE_SCORE',
   score,
+});
+
+export const actionSumAssertions = (assertions) => ({
+  type: SUM_ASSERTIONS,
+  assertions,
 });
 
 export const actionGetToken = () => async (dispatch) => {

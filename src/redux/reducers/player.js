@@ -1,8 +1,8 @@
-import { EMAIL, USER } from '../actions/actions';
+import { EMAIL, SUM_ASSERTIONS, USER } from '../actions/actions';
 
 const INITIAL_STATE = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };
@@ -23,6 +23,11 @@ const player = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: state.score + action.score,
+    };
+  case SUM_ASSERTIONS:
+    return {
+      ...state,
+      assertions: action.assertions,
     };
   default:
     return state;
