@@ -48,34 +48,41 @@ class Game extends Component {
     }
   }
 
-  selectAnswer = ({ target }) => {
-    const { count, timer } = this.state;
-    const { quiz, saveScore } = this.props;
-    const classe = target.className;
-    const correct = 'correct-answer showAnswer';
-    const dez = 10;
-    const tres = 3;
-    const diff = quiz.results[count].difficulty;
+  selectAnswer = () => {
     this.setState({
       btnNext: true,
       trueAnswer: 'showAnswer',
       wrongOne: 'showWrong',
     });
-    if (classe === (correct) && diff === 'easy') {
-      saveScore(dez + timer);
-      this.setState({ disabledAnswer: true });
-    }
-    if (classe === (correct) && diff === 'medium') {
-      saveScore(dez + (timer * 2));
-      this.setState({ disabledAnswer: true });
-    }
-    if (classe === (correct) && diff === 'hard') {
-      saveScore(dez + (timer * tres));
-      this.setState({ disabledAnswer: true });
+  }
+
+  handleScore = () => {
+    const { count, timer } = this.state;
+    const { quiz, saveScore } = this.props;
+    const tres = 3;
+    const dez = 10;
+    const diff = quiz.results[count].difficulty;
+    switch (diff) {
+    case 'easy': return saveScore(dez + timer);
+    case 'medium': return saveScore(dez + (timer * 2));
+    case 'hard': return saveScore(dez + (timer * tres));
+    default:
+      saveScore(0);
     }
   }
 
+  mix = () => {
+    this.handleScore();
+    this.selectAnswer();
+  }
+
   handleNextBtn = () => {
+    const { history } = this.props;
+    const { count } = this.state;
+    const four = 4;
+    if (count === four) {
+      history.push('/feedback');
+    }
     this.setState({
       disabledAnswer: false,
       trueAnswer: '',
@@ -101,6 +108,7 @@ class Game extends Component {
     const nRand = 0.5;
     const answers = [...quiz.results[count].incorrect_answers,
       quiz.results[count].correct_answer].sort(() => nRand - Math.random());
+      // randomizacao da array retirado de https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
     const correct = quiz.results[count].correct_answer;
     this.setState({
       correctAnswer: correct,
@@ -121,24 +129,36 @@ class Game extends Component {
           <p data-testid="question-text">{ quiz.results[count].question }</p>
           <div data-testid="answer-options">
             {
-              wrongAnswers.map((answer, index) => (
-                // randomizacao da array retirado de https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-                <button
-                  key={ index }
-                  type="button"
-                  onClick={ this.selectAnswer }
-                  disabled={ disabledAnswer }
-                  className={ answer === correctAnswer
-                    ? `correct-answer ${trueAnswer}`
-                    : `wrong-answer ${wrongOne}` }
-                  data-testid={ answer === correctAnswer
-                    ? 'correct-answer'
-                    : `wrong-answer${index}` }
-                >
-                  { answer }
-                </button>
-              ))
+              wrongAnswers.map((answer, index) => {
+                if (answer === correctAnswer) {
+                  return (
+                    <button
+                      key={ index }
+                      type="button"
+                      onClick={ this.mix }
+                      disabled={ disabledAnswer }
+                      className={ `correct-answer ${trueAnswer}` }
+                      data-testid="correct-answer"
+                    >
+                      { answer }
+                    </button>
+                  );
+                }
+                return (
+                  <button
+                    key={ index }
+                    type="button"
+                    onClick={ this.selectAnswer }
+                    disabled={ disabledAnswer }
+                    className={ `wrong-answer ${wrongOne}` }
+                    data-testid={ `wrong-answer${index}` }
+                  >
+                    { answer }
+                  </button>
+                );
+              })
             }
+
           </div>
         </div>
         {btnNext ? (
@@ -154,7 +174,22 @@ class Game extends Component {
     );
   }
 }
-
+// (
+//   <button
+//     key={ index }
+//     type="button"
+//     onClick={ this.selectAnswer }
+//     disabled={ disabledAnswer }
+//     className={ answer === correctAnswer
+//       ? `correct-answer ${trueAnswer}`
+//       : `wrong-answer ${wrongOne}` }
+//     data-testid={ answer === correctAnswer
+//       ? 'correct-answer'
+//       : `wrong-answer${index}` }
+//   >
+//     { answer }
+//   </button>
+// )
 const mapStateToProps = (state) => ({
   token: state.token,
   quiz: state.quiz,
@@ -171,6 +206,7 @@ Game.defaultProps = {
 
 Game.propTypes = {
   getToken: propTypes.func.isRequired,
+  history: propTypes.shape({ push: propTypes.func }).isRequired,
   quiz: propTypes.shape({
     results: propTypes.arrayOf(propTypes.object),
     response_code: propTypes.number,
