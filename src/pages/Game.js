@@ -18,24 +18,15 @@ class Game extends Component {
       disabledAnswer: false,
       timer: 30,
     };
-    this.counter = null;
   }
 
   componentDidMount = async () => {
-    this.setState({ timer: 0 });
     const interval = 30000;
-    this.initTimer();
+    const um = 1000;
     await this.validateToken();
-    setInterval(this.disableQuiz, interval);
+    setTimeout(this.disableQuiz, interval);
+    setInterval(this.initTimer, um);
     this.createButtons();
-  }
-
-  componentDidUpdate() {
-    const four = 4;
-    const { count } = this.state;
-    if (count === four) {
-      clearInterval(this.updateQuiz);
-    }
   }
 
   disableQuiz = () => {
@@ -44,14 +35,8 @@ class Game extends Component {
 
   initTimer = () => {
     const { timer } = this.state;
-    console.log(timer);
-    const intervalTimer = 1000;
     if (timer > 0) {
-      this.counter = setInterval(() => {
-        this.setState({ timer: timer - 1 });
-      }, intervalTimer);
-    } else if (timer === 0) {
-      clearInterval(this.counter);
+      this.setState({ timer: timer - 1 });
     }
   }
 
@@ -65,29 +50,28 @@ class Game extends Component {
 
   selectAnswer = ({ target }) => {
     const { count, timer } = this.state;
-    const { quiz } = this.props; // saveScore
-    const correct = 'correct-answer';
+    const { quiz, saveScore } = this.props;
+    const classe = target.className;
+    const correct = 'correct-answer showAnswer';
     const dez = 10;
     const tres = 3;
     const diff = quiz.results[count].difficulty;
-    console.log(diff);
     this.setState({
       btnNext: true,
       trueAnswer: 'showAnswer',
       wrongOne: 'showWrong',
     });
-    console.log(target.className);
-    if (target.className.includes(correct) && diff === 'easy') {
-      const result = dez + timer;
-      return console.log(result);
-    } if (target.className.includes(correct) === correct && diff === 'medium') {
-      const mult = timer * 2;
-      const result = dez + mult;
-      return console.log(result);
-    } if (target.className.includes(correct) === correct && diff === 'hard') {
-      const mult = timer * tres;
-      const result = dez + mult;
-      return console.log(result);
+    if (classe === (correct) && diff === 'easy') {
+      saveScore(dez + timer);
+      this.setState({ disabledAnswer: true });
+    }
+    if (classe === (correct) && diff === 'medium') {
+      saveScore(dez + (timer * 2));
+      this.setState({ disabledAnswer: true });
+    }
+    if (classe === (correct) && diff === 'hard') {
+      saveScore(dez + (timer * tres));
+      this.setState({ disabledAnswer: true });
     }
   }
 
@@ -96,6 +80,7 @@ class Game extends Component {
       disabledAnswer: false,
       trueAnswer: '',
       wrongOne: '',
+      timer: 30,
     });
     this.updateQuiz();
     this.setState({ btnNext: false });
@@ -190,7 +175,7 @@ Game.propTypes = {
     results: propTypes.arrayOf(propTypes.object),
     response_code: propTypes.number,
   }),
-  // saveScore: propTypes.func.isRequired,
+  saveScore: propTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

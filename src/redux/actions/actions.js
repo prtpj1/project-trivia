@@ -38,10 +38,3 @@ export const actionGetToken = () => async (dispatch) => {
   const JSON = await response.json();
   dispatch(actionSaveQuiz(JSON));
 };
-
-/* export const actionGetQuiz = (token) => async (dispatch) => {
-  const URL = `https://opentdb.com/api.php?amount=5&token=${token}`;
-  const response = await fetch(URL);
-  const JSON = await response.json();
-  dispatch(actionSaveQuiz(JSON));
-}; */
