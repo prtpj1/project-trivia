@@ -189,22 +189,7 @@ class Game extends Component {
     );
   }
 }
-// (
-//   <button
-//     key={ index }
-//     type="button"
-//     onClick={ this.selectAnswer }
-//     disabled={ disabledAnswer }
-//     className={ answer === correctAnswer
-//       ? `correct-answer ${trueAnswer}`
-//       : `wrong-answer ${wrongOne}` }
-//     data-testid={ answer === correctAnswer
-//       ? 'correct-answer'
-//       : `wrong-answer${index}` }
-//   >
-//     { answer }
-//   </button>
-// )
+
 const mapStateToProps = (state) => ({
   token: state.token,
   quiz: state.quiz,

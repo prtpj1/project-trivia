@@ -25,7 +25,6 @@ class Login extends React.Component {
   clickButton = async () => {
     const { getToken, setEmail, setUser, history } = this.props;
     const { email, name } = this.state;
-
     setEmail(email);
     setUser(name);
     await getToken();
