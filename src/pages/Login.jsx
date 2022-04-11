@@ -25,7 +25,6 @@ class Login extends React.Component {
   clickButton = async () => {
     const { getToken, setEmail, setUser, history } = this.props;
     const { email, name } = this.state;
-
     setEmail(email);
     setUser(name);
     await getToken();
@@ -100,11 +99,14 @@ class Login extends React.Component {
             />
           </div>
         </form>
-        <Button
-          testid="btn-settings"
-          label="Configurações"
-          onClick={ this.goToConfig }
-        />
+        <div id="btnlinks">
+          <Button
+            testid="btn-settings"
+            label="Configurações"
+            onClick={ this.goToConfig }
+          />
+
+        </div>
       </div>
     );
   }

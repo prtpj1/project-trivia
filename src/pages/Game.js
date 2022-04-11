@@ -80,7 +80,6 @@ class Game extends Component {
   mix = ({ target }) => {
     const { assertions, correctAnswer } = this.state;
     const { sumAssertions } = this.props;
-    console.log(target);
     this.setState({
       assertions: correctAnswer === target.value ? assertions + 1 : assertions,
     });
@@ -107,8 +106,9 @@ class Game extends Component {
   }
 
   updateQuiz = () => {
-    const { count, wrongAnswers } = this.state;
-    if (count <= wrongAnswers.length - 1) {
+    const { count } = this.state;
+    const four = 4;
+    if (count <= four) {
       this.setState({
         count: count + 1,
       }, this.createButtons);
@@ -133,6 +133,7 @@ class Game extends Component {
     const { count, wrongAnswers, correctAnswer,
       btnNext, trueAnswer, wrongOne, disabledAnswer, timer } = this.state;
     const { quiz } = this.props;
+    console.log(count);
     return (
       <div>
         <Header />
@@ -188,22 +189,7 @@ class Game extends Component {
     );
   }
 }
-// (
-//   <button
-//     key={ index }
-//     type="button"
-//     onClick={ this.selectAnswer }
-//     disabled={ disabledAnswer }
-//     className={ answer === correctAnswer
-//       ? `correct-answer ${trueAnswer}`
-//       : `wrong-answer ${wrongOne}` }
-//     data-testid={ answer === correctAnswer
-//       ? 'correct-answer'
-//       : `wrong-answer${index}` }
-//   >
-//     { answer }
-//   </button>
-// )
+
 const mapStateToProps = (state) => ({
   token: state.token,
   quiz: state.quiz,
