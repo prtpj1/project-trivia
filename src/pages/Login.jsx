@@ -100,11 +100,14 @@ class Login extends React.Component {
             />
           </div>
         </form>
-        <Button
-          testid="btn-settings"
-          label="Configurações"
-          onClick={ this.goToConfig }
-        />
+        <div id="btnlinks">
+          <Button
+            testid="btn-settings"
+            label="Configurações"
+            onClick={ this.goToConfig }
+          />
+
+        </div>
       </div>
     );
   }
