@@ -1,6 +1,6 @@
 # 15º Projeto: Trivia
 
-# :construction: HEADER em construção ! :construction:
+### :construction: HEADER em construção ! :construction:
 A Trivia ainda não possui CSS, pois não pude fazer durante o curso. Assim que possível estarei adicionando o CSS e as funcionalidades que ficaram faltando.
 <!-- <p align="center">
 
