@@ -13,15 +13,15 @@ Neste projeto, também aprendemos e praticamos metodologias ágeis usando um qua
 O uso do Slack e Zoom também foram muito importantes para a comunicação do grupo.
 <br>
 
-### Nesse projeto, apredemos e colocamos em prática:
+## Nesse projeto, apredemos e colocamos em prática:
 - Criar um store Redux em aplicações React
 - Criar reducers no Redux em aplicações React
 - Criar actions no Redux em aplicações React
 - Criar dispatchers no Redux em aplicações React
 - Conectar Redux aos componentes React
-- Criar actions assíncronas na sua aplicação React que faz uso de Redux.
+- Criar actions assíncronas na sua aplicação React que faz uso de Redux.<br>
 
-### De acordo com requisitos do projeto:
+## De acordo com requisitos do projeto:
 - O usuário poderá logar no jogo e, se o email tiver cadastro no site Gravatar, será exibida a foto associada ao perfil da pessoa usuária. ✅
 - O usuário poderá iniciar o jogo com a primeira pergunta a ser respondida. ✅
 - A resposta certa será destacada após o usuário escolher uma das respostas, assim como as erradas. ✅
@@ -59,11 +59,13 @@ Aprendi bastante com cada um deles:
 
 ## Como rodar a aplicação?
 
-1. Clone o repositório: <br>
-`git clone git@github.com:prtpj1/project-trivia.git` 
-2. Instale as dependências: <br>
+- Clone o repositório: <br>
+`git clone git@github.com:prtpj1/project-trivia.git`
+- Acesse a pasta do projeto: <br>
+`cd project-trivia`
+- Instale as dependências: <br>
 `npm install`
-3. Inicie a aplicação: <br>
+- Inicie a aplicação: <br>
 `npm start` <br>
 ⚠️Aguarde a aplicação abrir no seu navegador. Caso não ocorra, coloque na barra de endereços do seu navegador: `http://localhost:3000/`
 
