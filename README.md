@@ -3,6 +3,9 @@
 <img src="https://github.com/prtpj1/prtpj1/blob/main/Headers/15-Trivia.jpg?raw=true" alt="Header" />
 
 ---
+A Trivia ainda não possui CSS, pois não pude fazer durante o curso. Assim que possível estarei adicionando o CSS e as funcionalidades que ficaram faltando.
+
+---
 Este foi o segundo projeto em grupo que ajudei a desenvolver enquanto estudava na Trybe. Esta aplicação é um jogo de perguntas e respostas baseado no jogo Trivia e foi desenvolvida utilizando React e Redux.<br>
 Neste projeto, também aprendemos e praticamos metodologias ágeis usando um quadro de Kanban onde estavam definidas as demandas do projeto. <br>
 O uso do Slack e Zoom também foram muito importantes para a comunicação do grupo.
